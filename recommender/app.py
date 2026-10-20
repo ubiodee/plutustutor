@@ -1,21 +1,16 @@
 """
-Hugging Face Space (Gradio) for the Plutus Learning Material Recommender.
-
-Adapted for ZeroGPU (free tier). The @spaces.GPU decorator is required so the
-Space detects a GPU function at startup. Duration is kept very short because
-the actual work is pure-Python BM25 and finishes in milliseconds.
+Plutus Learning Material Recommender — Render version
 """
 
-import spaces  # Must be imported for ZeroGPU detection (no-op outside ZeroGPU)
+import os
 import gradio as gr
 from recommender import PlutusRecommender
 
-# Load once at startup (tiny corpus → instant)
+# Load once at startup
 recommender = PlutusRecommender(mode="bm25")
 ALL_TOPICS = recommender.list_topics()
 
 
-@spaces.GPU(duration=10)  # Short duration — BM25 is extremely fast
 def recommend_ui(query: str, k: int, tool: str, exclude_text: str):
     if not query or not query.strip():
         return "Please enter what you want to learn."
@@ -38,7 +33,6 @@ def recommend_ui(query: str, k: int, tool: str, exclude_text: str):
     return "\n".join(lines)
 
 
-@spaces.GPU(duration=10)
 def topic_recommend(selected_topics: list[str], k: int):
     if not selected_topics:
         return "Select at least one topic."
@@ -60,16 +54,13 @@ with gr.Blocks(title="Plutus Learning Recommender", theme=gr.themes.Soft()) as d
         """
         # Plutus Learning Material Recommender
         Simple content-based recommendations over the Plutus Learner RAG corpus.
-        Enter what you want to learn (or pick topics) and get ranked learning resources.
-
-        **ZeroGPU compatible** — uses a short GPU allocation only while serving the request.
         """
     )
 
     with gr.Tab("Query Recommendation"):
         query_in = gr.Textbox(
             label="What do you want to learn?",
-            placeholder="e.g. difference between datum and redeemer, Plutus V3 validators, collateral...",
+            placeholder="e.g. difference between datum and redeemer, Plutus V3 validators...",
             lines=2,
         )
         with gr.Row():
@@ -102,17 +93,11 @@ with gr.Blocks(title="Plutus Learning Recommender", theme=gr.themes.Soft()) as d
     gr.Markdown(
         f"""
         ---
-        **Corpus:** {recommender.manifest.get('chunk_count', '?')} chunks
-        · Mode: BM25 (pure Python)
-        · Source: Plutus Learner RAG bootstrap notes
-
-        This is a lightweight content-based recommender adapted for ZeroGPU.
-        Each request reserves only ~10 seconds of GPU time (actual runtime is milliseconds).
+        **Corpus:** {recommender.manifest.get('chunk_count', '?')} chunks · BM25
         """
     )
 
+
 if __name__ == "__main__":
-    import os
-    # Render sets PORT; fall back to 7860 for local / HF
     port = int(os.environ.get("PORT", 7860))
     demo.launch(server_name="0.0.0.0", server_port=port, share=False)
