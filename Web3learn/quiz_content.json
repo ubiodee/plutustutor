@@ -1,0 +1,634 @@
+{
+  "quizData": {
+    "Module 1": {
+      "What is Plutus?": [
+        {
+          "id": "m1_t1_q1",
+          "question": "What is Plutus primarily used for on the Cardano blockchain?",
+          "options": [
+            "Managing user wallets and balances",
+            "Writing smart contracts",
+            "Mining ADA tokens"
+          ],
+          "correctIndex": 1
+        },
+        {
+          "id": "m1_t1_q2",
+          "question": "Which programming language is Plutus based on?",
+          "options": [
+            "Solidity",
+            "Python",
+            "Haskell"
+          ],
+          "correctIndex": 2
+        },
+        {
+          "id": "m1_t1_q3",
+          "question": "What does 'Turing-complete' mean in the context of Plutus?",
+          "options": [
+            "It can only perform simple arithmetic operations",
+            "It can perform any computation that a computer can perform",
+            "It runs faster than other blockchain languages"
+          ],
+          "correctIndex": 1
+        },
+        {
+          "id": "m1_t1_q4",
+          "question": "What is the low-level intermediate language that Plutus compiles down to?",
+          "options": [
+            "Plutus Core",
+            "Plutus Lite",
+            "Cardano Script"
+          ],
+          "correctIndex": 0
+        },
+        {
+          "id": "m1_t1_q5",
+          "question": "A smart contract on Cardano written in Plutus runs:",
+          "options": [
+            "On the developer's local machine",
+            "On a cloud server managed by IOHK",
+            "Automatically on the blockchain"
+          ],
+          "correctIndex": 2
+        }
+      ],
+      "Introduction to Plutus Core": [
+        {
+          "id": "m1_t2_q1",
+          "question": "What does 'lam x M' represent in Plutus Core?",
+          "options": [
+            "A constant value",
+            "A lambda function that takes variable x and evaluates M",
+            "A built-in operation"
+          ],
+          "correctIndex": 1
+        },
+        {
+          "id": "m1_t2_q2",
+          "question": "Which Plutus Core version introduced the 'constr' and 'case' constructs?",
+          "options": [
+            "1.0.0",
+            "1.1.0",
+            "2.0.0"
+          ],
+          "correctIndex": 1
+        },
+        {
+          "id": "m1_t2_q3",
+          "question": "What does '[M N]' mean in Plutus Core syntax?",
+          "options": [
+            "Delay M until N is ready",
+            "Apply function M to argument N",
+            "Define a constant M of type N"
+          ],
+          "correctIndex": 1
+        },
+        {
+          "id": "m1_t2_q4",
+          "question": "In Plutus Core, what rule applies to all programs regarding variables?",
+          "options": [
+            "Variables can be used freely without declaration",
+            "All programs must be 'closed' — every variable must be declared via lam",
+            "Variables must be declared only for built-in functions"
+          ],
+          "correctIndex": 1
+        },
+        {
+          "id": "m1_t2_q5",
+          "question": "What does the 'force M' construct do in Plutus Core?",
+          "options": [
+            "Throws a runtime error for M",
+            "Resumes a delayed computation M",
+            "Creates a structured data type M"
+          ],
+          "correctIndex": 1
+        }
+      ],
+      "Introduction to Haskell": [
+        {
+          "id": "m1_t3_q1",
+          "question": "In Haskell, what does it mean for a function to be 'pure'?",
+          "options": [
+            "It runs without any memory usage",
+            "It always returns the same output for the same input with no side effects",
+            "It can only accept numbers as input"
+          ],
+          "correctIndex": 1
+        },
+        {
+          "id": "m1_t3_q2",
+          "question": "What is 'lazy evaluation' in Haskell?",
+          "options": [
+            "Code runs line by line immediately",
+            "Code is only evaluated when its result is actually needed",
+            "Functions are cached and reused automatically"
+          ],
+          "correctIndex": 1
+        },
+        {
+          "id": "m1_t3_q3",
+          "question": "What does function composition mean in Haskell?",
+          "options": [
+            "Combining multiple functions so the output of one becomes the input of the next",
+            "Writing a function that accepts multiple arguments at once",
+            "Importing external libraries into a Haskell file"
+          ],
+          "correctIndex": 0
+        },
+        {
+          "id": "m1_t3_q4",
+          "question": "What does Haskell's static type system do?",
+          "options": [
+            "Types are checked at runtime when the program executes",
+            "Types are checked at compile time before the program runs",
+            "Types are optional and only used for documentation"
+          ],
+          "correctIndex": 1
+        },
+        {
+          "id": "m1_t3_q5",
+          "question": "Which tool is used to run Haskell code interactively?",
+          "options": [
+            "Cabal",
+            "GHCi",
+            "Nix"
+          ],
+          "correctIndex": 1
+        }
+      ],
+      "Introduction to Plutus Smart Contract": [
+        {
+          "id": "m1_t4_q1",
+          "question": "A Plutus smart contract is divided into which two main components?",
+          "options": [
+            "Frontend code and backend code",
+            "On-chain code and off-chain code",
+            "Validator code and wallet code"
+          ],
+          "correctIndex": 1
+        },
+        {
+          "id": "m1_t4_q2",
+          "question": "What compiler is used for Plutus on-chain code?",
+          "options": [
+            "GHC (Glasgow Haskell Compiler)",
+            "The Plutus Compiler",
+            "The Cardano Node Compiler"
+          ],
+          "correctIndex": 1
+        },
+        {
+          "id": "m1_t4_q3",
+          "question": "What does the Plutus Application Framework (PAF) help with?",
+          "options": [
+            "Writing on-chain validator logic",
+            "Compiling Plutus Core scripts",
+            "Writing off-chain code that manages wallets and transactions"
+          ],
+          "correctIndex": 2
+        },
+        {
+          "id": "m1_t4_q4",
+          "question": "Where does the on-chain part of a Plutus smart contract execute?",
+          "options": [
+            "On the user's computer",
+            "On a centralised IOHK server",
+            "On the Cardano blockchain"
+          ],
+          "correctIndex": 2
+        },
+        {
+          "id": "m1_t4_q5",
+          "question": "Off-chain Plutus code is compiled using:",
+          "options": [
+            "GHC (Glasgow Haskell Compiler)",
+            "Plutus Core Compiler",
+            "Nix Shell"
+          ],
+          "correctIndex": 0
+        }
+      ],
+      "Introduction to eUTXO": [
+        {
+          "id": "m1_t5_q1",
+          "question": "What does UTXO stand for?",
+          "options": [
+            "Universal Token Exchange Output",
+            "Unspent Transaction Output",
+            "Unified Transaction eXchange Object"
+          ],
+          "correctIndex": 1
+        },
+        {
+          "id": "m1_t5_q2",
+          "question": "What three new elements does the Extended UTXO (eUTXO) model add?",
+          "options": [
+            "Mnemonic, Signature, Block hash",
+            "Datum, Validator script, Redeemer",
+            "Input, Output, Fee"
+          ],
+          "correctIndex": 1
+        },
+        {
+          "id": "m1_t5_q3",
+          "question": "In the eUTXO model, what is the 'redeemer'?",
+          "options": [
+            "Data attached to a UTXO when it is created",
+            "Data provided when spending a UTXO to satisfy the validator script",
+            "The address that receives funds after a transaction"
+          ],
+          "correctIndex": 1
+        },
+        {
+          "id": "m1_t5_q4",
+          "question": "What is a key security benefit of Cardano's eUTXO model over Ethereum's account model?",
+          "options": [
+            "Validators can access the entire blockchain state for more context",
+            "Transactions are free of charge",
+            "Validators only see local data — no global state access — making behaviour predictable"
+          ],
+          "correctIndex": 2
+        },
+        {
+          "id": "m1_t5_q5",
+          "question": "What happens to a UTXO once it is spent in a transaction?",
+          "options": [
+            "It is updated with the new balance",
+            "It is permanently removed and new UTXOs are created",
+            "It is moved to a pending pool for reuse"
+          ],
+          "correctIndex": 1
+        }
+      ],
+      "Introduction to Plutus Playground": [
+        {
+          "id": "m1_t6_q1",
+          "question": "What is the main purpose of the Plutus Playground?",
+          "options": [
+            "Deploying smart contracts directly to the Cardano mainnet",
+            "Simulating and testing Plutus smart contracts without a live blockchain",
+            "Writing off-chain Haskell code for wallet interaction"
+          ],
+          "correctIndex": 1
+        },
+        {
+          "id": "m1_t6_q2",
+          "question": "Which command starts the Plutus Playground server locally?",
+          "options": [
+            "npm start",
+            "nix-shell",
+            "plutus-playground-server"
+          ],
+          "correctIndex": 2
+        },
+        {
+          "id": "m1_t6_q3",
+          "question": "In the Plutus Playground simulation, what does a 'slot' represent?",
+          "options": [
+            "A wallet's balance entry",
+            "A unit of time or a step in the transaction sequence",
+            "A compiled Plutus script"
+          ],
+          "correctIndex": 1
+        },
+        {
+          "id": "m1_t6_q4",
+          "question": "After compiling in the Plutus Playground, what is the next step to test your contract?",
+          "options": [
+            "Deploy to mainnet",
+            "Run Simulate to set up wallets and actions",
+            "Export the contract as a JSON file"
+          ],
+          "correctIndex": 1
+        },
+        {
+          "id": "m1_t6_q5",
+          "question": "What is 'Lovelace' in the context of the Plutus Playground?",
+          "options": [
+            "The name of the default test wallet",
+            "A library used for off-chain code",
+            "The smallest unit of ADA used in wallet simulations"
+          ],
+          "correctIndex": 2
+        }
+      ],
+      "Advantages of Plutus": [
+        {
+          "id": "m1_t7_q1",
+          "question": "What is a key security advantage of writing Plutus in Haskell?",
+          "options": [
+            "Haskell runs faster than any other language",
+            "Haskell's strong type system and purity make contracts easier to verify and less error-prone",
+            "Haskell automatically deploys contracts to the blockchain"
+          ],
+          "correctIndex": 1
+        },
+        {
+          "id": "m1_t7_q2",
+          "question": "How does Plutus simplify the development architecture compared to other blockchain ecosystems?",
+          "options": [
+            "It uses two separate languages — one for on-chain and one for off-chain — reducing confusion",
+            "It uses a single language (Haskell/Plutus) for both on-chain and off-chain code",
+            "It removes the need for any off-chain code entirely"
+          ],
+          "correctIndex": 1
+        },
+        {
+          "id": "m1_t7_q3",
+          "question": "How does Cardano handle custom tokens (like NFTs) compared to Ethereum?",
+          "options": [
+            "Cardano requires a separate smart contract like ERC-20 for each token",
+            "Cardano supports native tokens at the ledger level — no extra contract needed",
+            "Cardano does not support custom tokens"
+          ],
+          "correctIndex": 1
+        },
+        {
+          "id": "m1_t7_q4",
+          "question": "When you write a Plutus contract in one codebase, what does the Plutus toolchain do?",
+          "options": [
+            "Deploys it directly without compilation",
+            "Automatically separates and compiles the on-chain and off-chain portions",
+            "Converts it into Solidity for cross-chain compatibility"
+          ],
+          "correctIndex": 1
+        },
+        {
+          "id": "m1_t7_q5",
+          "question": "Which of the following is NOT a stated advantage of Plutus?",
+          "options": [
+            "Easier formal verification due to Haskell's functional purity",
+            "Native token support without extra smart contracts",
+            "Lower transaction fees than all other blockchain platforms"
+          ],
+          "correctIndex": 2
+        }
+      ]
+    },
+    "Module 2": {
+      "What is Ledger Language Version": [
+        {
+          "id": "m2_t1_q1",
+          "question": "What does the term 'Ledger Language Version' refer to in Plutus?",
+          "options": [
+            "The version of the Haskell compiler used to build contracts",
+            "A tag used by the Cardano ledger to determine how to process and interpret a validator script",
+            "The version number of the Plutus Core language"
+          ],
+          "correctIndex": 1
+        },
+        {
+          "id": "m2_t1_q2",
+          "question": "Which Cardano era introduced Plutus V3?",
+          "options": [
+            "Alonzo",
+            "Babbage",
+            "Conway"
+          ],
+          "correctIndex": 2
+        },
+        {
+          "id": "m2_t1_q3",
+          "question": "What new capability does Plutus V3 add that V1 and V2 do not have?",
+          "options": [
+            "Support for reference inputs",
+            "Support for governance actions",
+            "Support for ADA staking"
+          ],
+          "correctIndex": 1
+        },
+        {
+          "id": "m2_t1_q4",
+          "question": "Do Plutus V1, V2, and V3 all use the same underlying engine?",
+          "options": [
+            "No — each version uses a completely different execution engine",
+            "Yes — they all run on Plutus Core and the UPLC evaluator",
+            "Yes — but only V1 and V2 share the same engine; V3 is different"
+          ],
+          "correctIndex": 1
+        },
+        {
+          "id": "m2_t1_q5",
+          "question": "When does the Ledger Language Version matter to a developer?",
+          "options": [
+            "Always — every line of Plutus code is version-sensitive",
+            "Only when writing off-chain code",
+            "Only when deploying a validator script to the Cardano ledger"
+          ],
+          "correctIndex": 2
+        }
+      ],
+      "Plutus Core Version": [
+        {
+          "id": "m2_t2_q1",
+          "question": "How many Plutus Core versions currently exist?",
+          "options": [
+            "Three — 1.0.0, 1.1.0, and 1.2.0",
+            "Two — 1.0.0 and 1.1.0",
+            "One — only 1.0.0"
+          ],
+          "correctIndex": 1
+        },
+        {
+          "id": "m2_t2_q2",
+          "question": "What major feature was introduced in Plutus Core version 1.1.0?",
+          "options": [
+            "Support for lazy evaluation",
+            "Sums-of-products via the 'constr' and 'case' constructs",
+            "Native token minting support"
+          ],
+          "correctIndex": 1
+        },
+        {
+          "id": "m2_t2_q3",
+          "question": "What does the 'constr' construct in Plutus Core 1.1.0 allow you to do?",
+          "options": [
+            "Pause and resume computation",
+            "Build structured data values",
+            "Define a new built-in function"
+          ],
+          "correctIndex": 1
+        },
+        {
+          "id": "m2_t2_q4",
+          "question": "Do new built-in functions in Plutus Core require a new language version?",
+          "options": [
+            "Yes — every new built-in requires a version bump",
+            "No — built-in functions can be added independently without changing the version",
+            "Only if the built-in changes existing behaviour"
+          ],
+          "correctIndex": 1
+        },
+        {
+          "id": "m2_t2_q5",
+          "question": "Which CIP formalises the introduction of sums-of-products in Plutus Core 1.1.0?",
+          "options": [
+            "CIP-30",
+            "CIP-85",
+            "CIP-1694"
+          ],
+          "correctIndex": 1
+        }
+      ],
+      "Built-in Semantics Variant": [
+        {
+          "id": "m2_t3_q1",
+          "question": "What is a 'Built-in Semantics Variant' in Plutus?",
+          "options": [
+            "A different version of the Plutus Core language",
+            "A configuration that defines how a built-in function behaves based on the Plutus or protocol version",
+            "A flag that enables lazy evaluation for built-in functions"
+          ],
+          "correctIndex": 1
+        },
+        {
+          "id": "m2_t3_q2",
+          "question": "Why does Plutus maintain multiple semantics variants for the same built-in function?",
+          "options": [
+            "To allow developers to choose the fastest implementation",
+            "To preserve backward compatibility — older contracts depend on legacy behaviour",
+            "To support multiple programming languages beyond Haskell"
+          ],
+          "correctIndex": 1
+        },
+        {
+          "id": "m2_t3_q3",
+          "question": "What changed about 'consByteString' starting from Plutus V3?",
+          "options": [
+            "It was removed from the language entirely",
+            "Out-of-range byte values now throw an error instead of wrapping around",
+            "It now accepts strings as well as integers"
+          ],
+          "correctIndex": 1
+        },
+        {
+          "id": "m2_t3_q4",
+          "question": "How do you specify the built-in semantics variant when using the UPLC command-line tool?",
+          "options": [
+            "Using the --version flag",
+            "Using the -S or --builtin-semantics-variant flag",
+            "Using the --core-mode flag"
+          ],
+          "correctIndex": 1
+        },
+        {
+          "id": "m2_t3_q5",
+          "question": "What did the legacy behaviour of 'consByteString' do with out-of-range byte values?",
+          "options": [
+            "It threw a runtime exception immediately",
+            "It wrapped the value around using modulo 256",
+            "It converted the value to a string automatically"
+          ],
+          "correctIndex": 1
+        }
+      ],
+      "Plutus Haskell Package Version": [
+        {
+          "id": "m2_t4_q1",
+          "question": "Where are Plutus Haskell packages like 'plutus-core' and 'plutus-ledger-api' published?",
+          "options": [
+            "Hackage — the standard Haskell package repository",
+            "npm — the Node.js package registry",
+            "CHaP — the Cardano Haskell Package repository"
+          ],
+          "correctIndex": 2
+        },
+        {
+          "id": "m2_t4_q2",
+          "question": "What versioning format do Plutus Haskell packages use?",
+          "options": [
+            "Date-based versioning (e.g., 2024.01.15)",
+            "Semantic versioning — Major.Minor.Patch (e.g., 1.4.2)",
+            "Single integer versioning (e.g., v5)"
+          ],
+          "correctIndex": 1
+        },
+        {
+          "id": "m2_t4_q3",
+          "question": "Which of the following is a Plutus Haskell package?",
+          "options": [
+            "cardano-wallet",
+            "plutus-tx-plugin",
+            "ghc-core"
+          ],
+          "correctIndex": 1
+        },
+        {
+          "id": "m2_t4_q4",
+          "question": "Do Plutus Haskell package versions directly affect the on-chain behaviour of smart contracts?",
+          "options": [
+            "Yes — updating a package version changes how validators run on-chain",
+            "No — these are developer tooling versions, independent of blockchain execution",
+            "Only if you update the plutus-ledger-api package"
+          ],
+          "correctIndex": 1
+        },
+        {
+          "id": "m2_t4_q5",
+          "question": "What is the relationship between Plutus Haskell package versions and Ledger Language Versions?",
+          "options": [
+            "They are directly linked — a new package version always means a new ledger version",
+            "They are completely independent — one does not imply a change in the other",
+            "Package versions are always one step ahead of ledger versions"
+          ],
+          "correctIndex": 1
+        }
+      ]
+    },
+    "Module 3": {
+      "Validation": [
+        {
+          "id": "m3_t1_q1",
+          "question": "What is the role of a validator in a Plutus smart contract?",
+          "options": [
+            "It generates new ADA tokens for the sender",
+            "It checks whether a transaction is allowed by returning successfully or throwing an error",
+            "It signs the transaction on behalf of the user"
+          ],
+          "correctIndex": 1
+        },
+        {
+          "id": "m3_t1_q2",
+          "question": "What are the three inputs that a Plutus validator function receives?",
+          "options": [
+            "Address, Amount, Timestamp",
+            "Datum, Redeemer, and Context",
+            "PublicKey, Signature, and BlockHash"
+          ],
+          "correctIndex": 1
+        },
+        {
+          "id": "m3_t1_q3",
+          "question": "What does the following validator do? mkValidator _ _ _ = ()",
+          "options": [
+            "Always rejects every transaction",
+            "Validates only transactions from wallet 1",
+            "Always approves every transaction — it ignores all inputs"
+          ],
+          "correctIndex": 2
+        },
+        {
+          "id": "m3_t1_q4",
+          "question": "What does this validator do? mkValidator _ _ _ = error ()",
+          "options": [
+            "Logs a message and approves the transaction",
+            "Always fails — no one can ever unlock funds from this script",
+            "Accepts transactions only when the redeemer is empty"
+          ],
+          "correctIndex": 1
+        },
+        {
+          "id": "m3_t1_q5",
+          "question": "What is the purpose of 'traceError' in a Plutus validator?",
+          "options": [
+            "It approves the transaction and writes a log",
+            "It fails the transaction and emits a readable error message for debugging",
+            "It traces the transaction on the blockchain explorer"
+          ],
+          "correctIndex": 1
+        }
+      ]
+    }
+  }
+}

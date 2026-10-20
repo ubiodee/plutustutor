@@ -1,0 +1,24 @@
+{
+    "name": "Web3Learn - Personalized Crypto Education",
+    "short_name": "Web3Learn",
+    "description": "Personalized Web3 educational platform featuring AI-powered modules and Cardano-specific learning paths.",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#2563eb",
+    "icons": [
+        {
+            "src": "/icon.svg",
+            "sizes": "180x180",
+            "type": "image/svg+xml",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/apple-icon.png",
+            "sizes": "192x192",
+            "type": "image/png",
+            "purpose": "any maskable"
+        }
+    ],
+    "orientation": "portrait"
+}

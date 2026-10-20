@@ -1,0 +1,87 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(documentUserId) {
+      return isAuthenticated() && request.auth.uid == documentUserId;
+    }
+
+    
+    
+    function isValidModule() {
+      return request.resource.data.userId is string &&
+             request.resource.data.moduleId is string &&
+             request.resource.data.moduleName is string &&
+             request.resource.data.userId == request.auth.uid;
+    }
+    
+    function isValidTopic() {
+      return request.resource.data.userId is string &&
+             request.resource.data.moduleId is string &&
+             request.resource.data.topicName is string &&
+             request.resource.data.userId == request.auth.uid &&
+             request.resource.data.get('quizScore', 0) is number;
+    }
+    
+    match /users/{userId} {
+      // Allow read if user is authenticated and owns the document
+      allow read: if isOwner(userId);
+
+      // Allow create if user is authenticated, owns the document, and provides required fields
+      allow create: if request.auth != null &&
+        request.auth.uid == userId &&
+        // Require essential fields (allow empty strings for onboarding fields)
+        request.resource.data.keys().hasAll(['email', 'name', 'provider', 'personalityType', 'level']) &&
+        request.resource.data.email is string &&
+        request.resource.data.name is string &&
+        request.resource.data.provider is string &&
+        request.resource.data.personalityType is string &&
+        request.resource.data.level is string;
+
+      // Allow update if user is authenticated, owns the document, and only updates allowed fields
+      allow update: if request.auth != null &&
+        request.auth.uid == userId &&
+        // Document must exist for update
+        resource != null &&
+        // Allow updates to: lastLoginAt, name, level, personalityType, provider, photoURL, email
+        request.resource.data
+          .diff(resource.data)
+          .affectedKeys()
+          .hasOnly([
+            'lastLoginAt',
+            'name',
+            'level',
+            'personalityType',
+            'provider',
+            'photoURL',
+            'email'
+          ]);
+
+      allow delete: if false;
+    }
+    
+    match /modules/{moduleId} {
+      allow read: if isOwner(resource.data.userId);
+      allow create: if isAuthenticated() && isValidModule();
+      allow update: if isAuthenticated() && 
+        resource.data.userId == request.auth.uid &&
+        request.resource.data.userId == request.auth.uid;
+      allow delete: if isAuthenticated() && 
+        resource.data.userId == request.auth.uid;
+    }
+    
+    match /topics/{topicId} {
+      allow read: if isOwner(resource.data.userId);
+      allow create: if isAuthenticated() && isValidTopic();
+      allow update: if isAuthenticated() && 
+        resource.data.userId == request.auth.uid &&
+        request.resource.data.userId == request.auth.uid &&
+        request.resource.data.get('quizScore', 0) is number;
+      allow delete: if isAuthenticated() && 
+        resource.data.userId == request.auth.uid;
+    }
+  }
+}

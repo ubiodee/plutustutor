@@ -1,0 +1,28 @@
+<svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="web3learn-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563EB" />
+      <stop offset="100%" stop-color="#0D9488" />
+    </linearGradient>
+    <linearGradient id="inner-glow" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.35" />
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0" />
+    </linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#000000" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+  <!-- Background with smooth squircle -->
+  <rect width="180" height="180" rx="40" fill="url(#web3learn-grad)" />
+  <rect x="2" y="2" width="176" height="176" rx="38" fill="none" stroke="url(#inner-glow)" stroke-width="2" />
+  
+  <!-- App Logo: Code Symbol < / > matching Web3Learn brand -->
+  <g filter="url(#shadow)">
+    <!-- Left Bracket < -->
+    <path d="M68 60L38 90L68 120" stroke="#FFFFFF" stroke-width="15" stroke-linecap="round" stroke-linejoin="round" />
+    <!-- Right Bracket > -->
+    <path d="M112 60L142 90L112 120" stroke="#FFFFFF" stroke-width="15" stroke-linecap="round" stroke-linejoin="round" />
+    <!-- Center Slash / -->
+    <path d="M99 54L81 126" stroke="#5EEAD4" stroke-width="13" stroke-linecap="round" />
+  </g>
+</svg>
