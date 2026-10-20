@@ -1,1 +1,9 @@
-
+{
+  "schema_version": 1,
+  "corpus_mode": "bootstrap_summary",
+  "chunk_count": 15,
+  "source_count": 15,
+  "corpus_sha256": "5a8abacbc233f59f11ac0f9aab96372e97bca8e87d61d7fd9d99ed2228018b33",
+  "dense": false,
+  "built_at": "2026-10-08T02:16:43Z"
+}
