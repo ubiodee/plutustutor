@@ -175,8 +175,11 @@ class Retriever:
         return tool == "all" or c["tool"] in {tool, "cardano", "haskell"}
 
     def search(self, question: str, *, k: int = 5, tool: str = "plinth", include_historical: bool = False) -> list[dict]:
-        if tool not in TOOLS or not 1 <= k <= 10:
-            raise ValueError("Invalid tool or k (1..10).")
+        # Allow "all" or empty to mean no tool filter
+        if tool and tool != "all" and tool not in ALLOWED_TOOLS:
+            raise ValueError(f"Invalid tool: {tool}")
+        if not (1 <= k <= 10):
+            raise ValueError("Invalid k (1..10).")
         query = expand_query(question)
         terms = set(tokenize(query))
         if not terms:
