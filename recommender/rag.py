@@ -64,6 +64,8 @@ def expand_query(question: str) -> str:
         extra.append("minting policy native assets")
     if "plutus v3" in lower:
         extra.append("ledger language version ScriptContext")
+    if "advantage" in lower or "benefit" in lower or "why use" in lower:
+        extra.append("benefits advantages features strengths")
     return question + " " + " ".join(extra)
 
 def read_jsonl(path: Path) -> list[dict]:
@@ -213,12 +215,14 @@ class Retriever:
 
         order = sorted(rrf, key=lambda i: (-rrf[i], -lexical.get(i, 0), i))
         output, counts, seen = [], Counter(), set()
+        original_terms = set(tokenize(question))
+        # Relaxed threshold so short queries (e.g. "Advantages of Plutus") still return results
+        required = max(1, min(1, len(original_terms)))  # only require 1 meaningful term overlap
+
         for i in order:
             c = self.chunks[i]
             matching = terms.intersection(self.docs[i])
-            original_terms = set(tokenize(question))
             meaningful = len(original_terms.intersection(self.docs[i]))
-            required = min(2, len(original_terms))
             strong_dense = similarities.get(i, -1) >= 0.65
             if meaningful < required and not strong_dense:
                 continue
