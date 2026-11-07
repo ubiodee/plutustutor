@@ -24,9 +24,11 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { useToast } from "@/hooks/use-toast"
-import { Home, ArrowLeft, Menu, X, Loader2, Sparkles, BookOpen, ExternalLink, Video, FileText, CheckCircle2, Circle, ThumbsUp, ThumbsDown, LogOut } from "lucide-react"
+import { Home, ArrowLeft, Menu, X, Loader2, Sparkles, BookOpen, ExternalLink, Video, FileText, CheckCircle2, Circle, ThumbsUp, ThumbsDown, LogOut, ChevronLeft, ChevronRight, RefreshCw, AlertCircle } from "lucide-react"
 import Link from "next/link"
 import { generateContent, generateContentStream, getRecommendations, getSummary, type RecommendationItem } from "@/lib/api"
+import { PLUTUS_TOPICS, TOTAL_PLUTUS_TOPICS, type PlutusTopic, getEquivalentRecommendTopic } from "@/services/topics"
+import { getPlutusRecommendations } from "@/services/plutusApi"
 import { LoadingFacts } from "@/components/loading-facts"
 import confetti from "canvas-confetti"
 import ReactMarkdown from "react-markdown"
@@ -146,6 +148,11 @@ function LearningPageContent() {
   const [topicRecommendations, setTopicRecommendations] = useState<Record<string, RecommendationItem[]>>({})
   const [topicRecommendationText, setTopicRecommendationText] = useState<Record<string, string>>({})
   const [loadingRecommendations, setLoadingRecommendations] = useState(false)
+
+  // State for Plutus Tutor recommendations
+  const [plutusRecommendations, setPlutusRecommendations] = useState<
+    Record<string, { status: "idle" | "loading" | "success" | "error"; content?: string; error?: string }>
+  >({})
 
   // State for summary (per topic)
   const [topicSummaries, setTopicSummaries] = useState<Record<string, {
@@ -711,25 +718,23 @@ function LearningPageContent() {
 
           // Automatically fetch recommendations and summary in background (non-blocking)
           if (selectedModule) {
-            // Fetch recommendations in background (don't await)
-            getRecommendations({
-              personality: personality.toLowerCase(),
-              level: level.toLowerCase(),
-              topic: finalTopic || "plutus",
-              query: finalQuery || topic,
-              max_new_tokens: 700,
-              temperature: 0.4,
-              top_p: 0.5,
+            // Fetch recommendations in background via Plutus Tutor Gradio API by equivalent topic (don't await)
+            const equivalentRecommend = getEquivalentRecommendTopic(topic)
+            getPlutusRecommendations(equivalentRecommend, {
+              k: 5,
+              tool: "all",
+              exclude_text: "Hello!!",
             })
-              .then((recResponse) => {
-                if (!recResponse.error) {
-                  setTopicRecommendations((prev) => ({
+              .then((markdown) => {
+                if (markdown) {
+                  setPlutusRecommendations((prev) => ({
                     ...prev,
-                    [topic]: recResponse.results || [],
+                    [topic]: {
+                      status: markdown.trim().length > 0 ? "success" : "idle",
+                      content: markdown,
+                    },
                   }))
-                  if (recResponse.rawText) {
-                    setTopicRecommendationText((prev) => ({ ...prev, [topic]: recResponse.rawText! }))
-                  }
+                  setTopicRecommendationText((prev) => ({ ...prev, [topic]: markdown }))
 
                   // Save to Firestore
                   if (currentUserId && selectedModule) {
@@ -737,8 +742,8 @@ function LearningPageContent() {
                       currentUserId,
                       selectedModule.id,
                       topic,
-                      recResponse.query || topic,
-                      recResponse.results || []
+                      equivalentRecommend,
+                      []
                     ).catch((error) => {
                       console.error("Error saving recommendations to Firestore:", error)
                     })
@@ -746,7 +751,7 @@ function LearningPageContent() {
                 }
               })
               .catch((error) => {
-                console.error("Error fetching recommendations:", error)
+                console.error("Error fetching Plutus recommendations in background:", error)
               })
 
             // Fetch summary in background (don't await)
@@ -913,36 +918,43 @@ function LearningPageContent() {
     }
   }, [currentTopicIndex])
 
-  // Handle getting recommendations
-  const handleGetRecommendations = useCallback(async () => {
-    const currentTopic = selectedModule?.topics[currentTopicIndex]
-    if (!currentTopic || !topicResponses[currentTopic]) {
-      alert("Please generate content for the current topic first.")
-      return
-    }
+  // Handle fetching recommendations from Plutus Tutor (Gradio API) by equivalent topic
+  const fetchPlutusRecommendations = useCallback(
+    async (topicName?: string, forceRefresh = false) => {
+      const topicToFetch = topicName || selectedModule?.topics[currentTopicIndex]
+      if (!topicToFetch) return
 
-    const response = topicResponses[currentTopic]
+      // If already cached and not forcing refresh, do nothing
+      if (
+        !forceRefresh &&
+        plutusRecommendations[topicToFetch]?.status === "success" &&
+        plutusRecommendations[topicToFetch]?.content
+      ) {
+        return
+      }
 
-    setLoadingRecommendations(true)
-    try {
-      const recResponse = await getRecommendations({
-        personality: personality.toLowerCase(),
-        level: level.toLowerCase(),
-        topic: response.topic || "plutus",
-        query: response.query || currentTopic,
-        max_new_tokens: 700,
-        temperature: 0.4,
-        top_p: 0.5,
-      })
+      setPlutusRecommendations((prev) => ({
+        ...prev,
+        [topicToFetch]: { status: "loading" },
+      }))
+      setLoadingRecommendations(true)
 
-      if (!recResponse.error) {
-        setTopicRecommendations((prev) => ({
+      try {
+        const equivalentQuery = getEquivalentRecommendTopic(topicToFetch)
+        const markdown = await getPlutusRecommendations(equivalentQuery, {
+          k: 5,
+          tool: "all",
+          exclude_text: "Hello!!",
+        })
+
+        setPlutusRecommendations((prev) => ({
           ...prev,
-          [currentTopic]: recResponse.results || [],
+          [topicToFetch]: {
+            status: markdown && markdown.trim().length > 0 ? "success" : "idle",
+            content: markdown,
+          },
         }))
-        if (recResponse.rawText) {
-          setTopicRecommendationText((prev) => ({ ...prev, [currentTopic]: recResponse.rawText! }))
-        }
+        setTopicRecommendationText((prev) => ({ ...prev, [topicToFetch]: markdown }))
 
         // Save to Firestore
         if (currentUserId && selectedModule) {
@@ -950,21 +962,36 @@ function LearningPageContent() {
             await saveTopicRecommendations(
               currentUserId,
               selectedModule.id,
-              currentTopic,
-              recResponse.query || currentTopic,
-              recResponse.results || []
+              topicToFetch,
+              equivalentQuery,
+              []
             )
           } catch (error) {
             console.error("Error saving recommendations to Firestore:", error)
           }
         }
+      } catch (err: unknown) {
+        const errorMessage =
+          err instanceof Error
+            ? err.message
+            : "Failed to load recommendations. Please check your connection and try again."
+        setPlutusRecommendations((prev) => ({
+          ...prev,
+          [topicToFetch]: {
+            status: "error",
+            error: errorMessage,
+          },
+        }))
+      } finally {
+        setLoadingRecommendations(false)
       }
-    } catch (error) {
-      console.error("Error fetching recommendations:", error)
-    } finally {
-      setLoadingRecommendations(false)
-    }
-  }, [selectedModule, currentTopicIndex, topicResponses, personality, level, currentUserId])
+    },
+    [selectedModule, currentTopicIndex, plutusRecommendations, currentUserId]
+  )
+
+  const handleGetRecommendations = useCallback(() => {
+    return fetchPlutusRecommendations(undefined, true)
+  }, [fetchPlutusRecommendations])
 
   // Handle getting summary
   const handleGetSummary = useCallback(async () => {
@@ -1563,66 +1590,87 @@ function LearningPageContent() {
                 <TabsContent value="recommendations">
                   <div className="space-y-4">
                     {(() => {
-                      const currentTopic = selectedModule?.topics[currentTopicIndex]
-                      const recommendations = currentTopic ? topicRecommendations[currentTopic] || [] : []
+                      if (!selectedModule) {
+                        return (
+                          <p className="text-slate-600 text-center py-8">
+                            Please select a module to view recommendations.
+                          </p>
+                        )
+                      }
+
+                      const currentTopic = selectedModule.topics[currentTopicIndex]
+                      const currentRecState = plutusRecommendations[currentTopic]
+                      const equivalentRecommend = getEquivalentRecommendTopic(currentTopic)
+                      const isLoading = currentRecState?.status === "loading"
 
                       return (
                         <>
-                          <div className="flex flex-wrap items-center justify-between gap-2">
-                            <h3 className="text-base sm:text-lg font-semibold text-slate-800">Recommended Resources</h3>
+                          <div className="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-slate-100">
+                            <div>
+                              <h3 className="text-base sm:text-lg font-semibold text-slate-800 flex items-center gap-2">
+                                <BookOpen className="h-5 w-5 text-blue-600" />
+                                Recommended Resources
+                              </h3>
+                              <p className="text-xs text-slate-500 mt-0.5">
+                                Current Topic: <strong className="text-slate-700">{currentTopic}</strong>
+                              </p>
+                            </div>
                             <Button
-                              onClick={handleGetRecommendations}
-                              disabled={loadingRecommendations}
+                              onClick={() => fetchPlutusRecommendations(currentTopic, true)}
+                              disabled={isLoading}
                               className="bg-green-600 hover:bg-green-700 text-xs sm:text-sm h-8 sm:h-9 px-3"
                             >
-                              {loadingRecommendations ? (
+                              {isLoading ? (
                                 <>
                                   <Loader2 className="mr-1 h-3 w-3 animate-spin" /> Loading...
                                 </>
                               ) : (
                                 <>
                                   <BookOpen className="mr-1 h-3 w-3" />
-                                  <span className="hidden sm:inline">{currentTopic && topicRecommendations[currentTopic]?.length > 0 ? "Refresh" : "Get Recommendations"}</span>
-                                  <span className="sm:hidden">{currentTopic && topicRecommendations[currentTopic]?.length > 0 ? "Refresh" : "Get Links"}</span>
+                                  <span className="hidden sm:inline">
+                                    {currentRecState?.status === "success" ? "Refresh" : "Get Recommendations"}
+                                  </span>
+                                  <span className="sm:hidden">
+                                    {currentRecState?.status === "success" ? "Refresh" : "Get Links"}
+                                  </span>
                                 </>
                               )}
                             </Button>
                           </div>
-                          {loadingRecommendations ? (
-                            <LoadingFacts message="Finding the best resources for you..." />
-                          ) : recommendations.length > 0 ? (
-                            <div className="grid gap-4">
-                              {recommendations.map((item, index) => (
-                                <Card key={index} className="border-slate-200 hover:border-blue-300 transition-colors">
-                                  <CardContent className="pt-4">
-                                    <div className="flex items-start justify-between">
-                                      <div className="flex-1">
-                                        <div className="flex items-center gap-2 mb-2">
-                                          {item.type === "video" ? (
-                                            <Video className="h-5 w-5 text-red-600" />
-                                          ) : (
-                                            <FileText className="h-5 w-5 text-blue-600" />
-                                          )}
-                                          <span className="text-xs font-medium text-slate-500 uppercase">{item.type}</span>
-                                        </div>
-                                        <h4 className="font-semibold text-slate-800 mb-1">{item.topic}</h4>
-                                        <a
-                                          href={item.url}
-                                          target="_blank"
-                                          rel="noopener noreferrer"
-                                          className="text-blue-600 hover:text-blue-700 text-sm flex items-center gap-1"
-                                        >
-                                          View Resource <ExternalLink className="h-3 w-3" />
-                                        </a>
-                                      </div>
-                                    </div>
-                                  </CardContent>
-                                </Card>
-                              ))}
+
+                          {/* Recommendation Status Content */}
+                          {isLoading ? (
+                            <div className="space-y-4 py-8">
+                              <LoadingFacts message={`Finding the best Plutus resources for "${equivalentRecommend}"...`} />
+                              <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 text-left max-w-md mx-auto">
+                                <p className="text-xs text-amber-800 text-center">
+                                  <strong>Note:</strong> If the Plutus Tutor service on Render is waking up from inactivity, the first request may take 30–50 seconds.
+                                </p>
+                              </div>
                             </div>
-                          ) : currentTopic && topicRecommendationText[currentTopic] ? (
-                            // Raw text response — render with clickable hyperlinks
-                            <div className="p-4 bg-slate-50 rounded-lg">
+                          ) : currentRecState?.status === "error" ? (
+                            <div className="py-8 px-4 text-center max-w-md mx-auto space-y-4">
+                              <div className="inline-flex items-center justify-center p-3 bg-rose-100 text-rose-600 rounded-full">
+                                <AlertCircle className="h-8 w-8" />
+                              </div>
+                              <div>
+                                <h5 className="font-semibold text-slate-800 text-base">
+                                  Unable to Load Recommendations
+                                </h5>
+                                <p className="text-xs text-rose-600 mt-1 bg-rose-50 p-2.5 rounded border border-rose-200">
+                                  {currentRecState.error || "An error occurred while retrieving recommendations."}
+                                </p>
+                              </div>
+                              <Button
+                                onClick={() => fetchPlutusRecommendations(currentTopic, true)}
+                                className="bg-blue-600 hover:bg-blue-700 text-xs sm:text-sm h-8 px-4"
+                              >
+                                <RefreshCw className="mr-1.5 h-3.5 w-3.5" />
+                                Retry Now
+                              </Button>
+                            </div>
+                          ) : currentRecState?.status === "success" && currentRecState.content ? (
+                            <div className="p-4 sm:p-6 bg-slate-50 rounded-lg border border-slate-200 shadow-sm">
                               <div className="prose prose-slate max-w-none text-sm sm:text-base text-slate-700">
                                 <ReactMarkdown
                                   remarkPlugins={[remarkGfm]}
@@ -1632,25 +1680,81 @@ function LearningPageContent() {
                                         href={href}
                                         target="_blank"
                                         rel="noopener noreferrer"
-                                        className="text-blue-600 hover:text-blue-700 inline-flex items-center gap-1 underline"
+                                        className="text-blue-600 hover:text-blue-800 font-medium inline-flex items-center gap-1 underline underline-offset-2"
                                       >
                                         {children}
                                         <ExternalLink className="h-3 w-3 flex-shrink-0" />
                                       </a>
                                     ),
+                                    h3: ({ children }) => (
+                                      <h3 className="text-base sm:text-lg font-bold text-slate-800 mt-6 mb-2 border-b border-slate-200 pb-1">
+                                        {children}
+                                      </h3>
+                                    ),
+                                    code: ({ children }) => (
+                                      <code className="bg-slate-200/80 text-blue-800 px-1.5 py-0.5 rounded text-xs font-mono">
+                                        {children}
+                                      </code>
+                                    ),
                                   }}
                                 >
-                                  {topicRecommendationText[currentTopic]}
+                                  {currentRecState.content}
                                 </ReactMarkdown>
                               </div>
                             </div>
                           ) : (
-                            <p className="text-slate-600 text-center py-8">
-                              {currentTopic && topicResponses[currentTopic]
-                                ? "Recommendations will appear here after content is generated."
-                                : "Please generate content for the current topic first."}
-                            </p>
+                            <div className="py-12 px-4 text-center max-w-md mx-auto space-y-4">
+                              <div className="inline-flex items-center justify-center p-3 bg-blue-50 text-blue-600 rounded-full">
+                                <BookOpen className="h-8 w-8" />
+                              </div>
+                              <div>
+                                <h5 className="font-semibold text-slate-800 text-base">
+                                  Learning Resources for {currentTopic}
+                                </h5>
+                                <p className="text-xs sm:text-sm text-slate-500 mt-1">
+                                  Retrieve curated documentation, code examples, CIP specifications, and guides for{" "}
+                                  <span className="font-semibold text-slate-700">"{equivalentRecommend}"</span> from the Plutus Tutor knowledge base.
+                                </p>
+                              </div>
+                              <Button
+                                onClick={() => fetchPlutusRecommendations(currentTopic)}
+                                className="bg-blue-600 hover:bg-blue-700 text-xs sm:text-sm h-9 px-4"
+                              >
+                                <Sparkles className="mr-1.5 h-4 w-4" />
+                                Get Recommendations
+                              </Button>
+                            </div>
                           )}
+
+                          {/* Navigation Buttons matching Content tab */}
+                          <div className="flex justify-between items-center pt-4 gap-2 border-t border-slate-200">
+                            <Button
+                              onClick={handlePreviousTopic}
+                              disabled={currentTopicIndex === 0 || isGenerating}
+                              variant="outline"
+                              className="flex items-center gap-1 text-xs sm:text-sm h-8 sm:h-9 px-2 sm:px-4"
+                            >
+                              <ArrowLeft className="h-4 w-4" />
+                              <span className="hidden xs:inline sm:inline">Previous</span>
+                            </Button>
+                            <span className="text-xs sm:text-sm text-slate-600 shrink-0">
+                              {currentTopicIndex + 1} / {selectedModule.topics.length}
+                            </span>
+                            <Button
+                              onClick={handleNextTopic}
+                              disabled={isGenerating || currentTopicIndex === selectedModule.topics.length - 1}
+                              variant="default"
+                              className="bg-blue-600 hover:bg-blue-700 flex items-center gap-1 text-xs sm:text-sm h-8 sm:h-9 px-2 sm:px-4"
+                            >
+                              <span className="hidden sm:inline">
+                                {currentTopicIndex === selectedModule.topics.length - 1 ? "Complete Module" : "Next"}
+                              </span>
+                              <span className="sm:hidden">
+                                {currentTopicIndex === selectedModule.topics.length - 1 ? "Done" : "Next"}
+                              </span>
+                              <ArrowLeft className="h-4 w-4 rotate-180" />
+                            </Button>
+                          </div>
                         </>
                       )
                     })()}
