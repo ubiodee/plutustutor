@@ -1,0 +1,51 @@
+[
+  {
+    "id": "P03",
+    "Topic": "What is Plutus?",
+    "Level": "Beginner",
+    "Personality": "Expressive",
+    "question": "Teach me what a Plutus validator does using a fictional application that releases a locked digital workshop pass only when a transaction has the required beneficiary signature. Explain what the user does, what the client prepares, and what the script checks. Finish with one short practice question."
+  },
+  {
+    "id": "P04",
+    "Topic": "What is Plutus?",
+    "Level": "Beginner",
+    "Personality": "Introverted",
+    "question": "Teach me what a Plutus validator does using a fictional application that releases a locked digital workshop pass only when a transaction has the required beneficiary signature. Explain what the user does, what the client prepares, and what the script checks. Finish with one short practice question."
+  },
+  {
+    "id": "P06",
+    "Topic": "Introduction to Plutus Core",
+    "Level": "Expert",
+    "Personality": "Nerd",
+    "question": "Teach me how function application, delay, and force work together in Untyped Plutus Core. Use the term fragment (force (delay (con unit ()))) as a starting example. Then explain what changes when the delayed term is an error instead. Give me one related exercise."
+  },
+  {
+    "id": "P09",
+    "Topic": "Validation",
+    "Level": "Beginner",
+    "Personality": "Dyscalculic",
+    "question": "A fictional Cardano application lets a beneficiary claim a locked workshop pass. The beneficiary is identified in the datum, and the contract requires that beneficiary to sign the claim transaction. Explain how validation decides whether a proposed claim is allowed. Distinguish the datum, the claim redeemer, the transaction context, and the wallet's role. Include an allowed claim and a rejected claim."
+  },
+  {
+    "id": "P12",
+    "Topic": "Validation",
+    "Level": "Intermediate",
+    "Personality": "Autistic",
+    "question": "A workshop-pass contract requires the beneficiary's signature. An application displays \"claim approved\", but its submitted transaction lacks that signature. Teach me whether the application message is enough for the on-chain validator to accept the claim. Explain where the checks belong and provide a contrasting valid scenario. Include one question that tests my understanding."
+  },
+  {
+    "id": "P15",
+    "Topic": "Datum",
+    "Level": "Beginner",
+    "Personality": "Dyslexic",
+    "question": "A fictional workshop-pass script output has a datum containing the workshop name and the registered learner's public-key hash. Teach me what the datum represents and how it differs from the redeemer. Explain how a later transaction can propose a new state without editing an old output. Finish with one check question."
+  },
+  {
+    "id": "P17",
+    "Topic": "Redeemer",
+    "Level": "Intermediate",
+    "Personality": "Normal",
+    "question": "A fictional registration validator has two actions: Join and Cancel. Its datum identifies the learner and organiser. Join requires the learner's signature; Cancel requires the organiser's signature. Teach me how the redeemer identifies the requested action and how to decide whether that action is authorised. Include conceptual pseudocode and one negative test."
+  }
+]

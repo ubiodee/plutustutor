@@ -1,0 +1,246 @@
+{
+  "schema_version": 1,
+  "run_sha256": "2f76c05f5f2f8c95d7cea934d80973992655629441035b018c7d9171f3b48ace",
+  "started_utc": "2026-11-09T13:31:13.506063+00:00",
+  "settings": {
+    "models": {
+      "base": "openai/gpt-oss-20b",
+      "plutus": "Devubiodee/plutus-gpt-oss"
+    },
+    "dtype": "bfloat16",
+    "base_mxfp4_dequantized": true,
+    "attention_implementation": "eager",
+    "system_prompt": "You are a tutor for Cardano Plutus. Answer the learner's request.",
+    "reasoning_effort": "low",
+    "seed": 42,
+    "max_input_tokens": 2047,
+    "max_total_tokens": 2048,
+    "token_budget_policy": "full_prompt_plus_all_generated_tokens",
+    "per_request_allowance": "min(max_new_tokens, max_total_tokens - prompt_tokens)",
+    "generation_settings": {
+      "max_new_tokens": 2048,
+      "do_sample": false,
+      "num_beams": 1,
+      "repetition_penalty": 1.0,
+      "use_cache": true,
+      "eos_token_id": [
+        200002,
+        199999,
+        200012
+      ],
+      "pad_token_id": 199999
+    },
+    "question_sha256": "588ceea227c2fb93bcd62de0981b65df77e352a01dc17915ed5dad833eb611f8"
+  },
+  "models": {
+    "base": "openai/gpt-oss-20b",
+    "plutus": "Devubiodee/plutus-gpt-oss"
+  },
+  "revisions": {
+    "base": "6cee5e81ee83917806bbde320786a8fb61efebee",
+    "plutus": "be2623db00cf83d64ca7bda4c3613d09bdb3af27"
+  },
+  "tokenizer_repository": "openai/gpt-oss-20b",
+  "tokenizer_revision": "6cee5e81ee83917806bbde320786a8fb61efebee",
+  "generation_config": {
+    "max_length": null,
+    "max_new_tokens": 2048,
+    "min_length": null,
+    "min_new_tokens": null,
+    "early_stopping": null,
+    "max_time": null,
+    "stop_strings": null,
+    "do_sample": false,
+    "num_beams": 1,
+    "use_mtp": null,
+    "use_cache": true,
+    "cache_implementation": null,
+    "cache_config": null,
+    "max_cache_len": null,
+    "temperature": null,
+    "top_k": null,
+    "top_p": null,
+    "min_p": null,
+    "top_h": null,
+    "typical_p": null,
+    "epsilon_cutoff": null,
+    "eta_cutoff": null,
+    "repetition_penalty": 1.0,
+    "encoder_repetition_penalty": null,
+    "length_penalty": null,
+    "no_repeat_ngram_size": null,
+    "bad_words_ids": null,
+    "renormalize_logits": null,
+    "forced_bos_token_id": null,
+    "forced_eos_token_id": null,
+    "remove_invalid_values": null,
+    "exponential_decay_length_penalty": null,
+    "suppress_tokens": null,
+    "begin_suppress_tokens": null,
+    "sequence_bias": null,
+    "token_healing": null,
+    "guidance_scale": null,
+    "watermarking_config": null,
+    "num_return_sequences": null,
+    "output_attentions": null,
+    "output_hidden_states": null,
+    "output_scores": null,
+    "output_logits": null,
+    "return_dict_in_generate": null,
+    "pad_token_id": 199999,
+    "bos_token_id": null,
+    "eos_token_id": [
+      200002,
+      199999,
+      200012
+    ],
+    "encoder_no_repeat_ngram_size": null,
+    "decoder_start_token_id": null,
+    "is_assistant": null,
+    "num_assistant_tokens": null,
+    "num_assistant_tokens_schedule": null,
+    "assistant_confidence_threshold": null,
+    "prompt_lookup_num_tokens": null,
+    "max_matching_ngram_size": null,
+    "assistant_early_exit": null,
+    "assistant_lookbehind": null,
+    "target_lookbehind": null,
+    "assistant_ensemble_weight": null,
+    "speculation_type": null,
+    "compile_config": null,
+    "disable_compile": null,
+    "continuous_batching_config": null,
+    "low_memory": null,
+    "penalty_alpha": null,
+    "dola_layers": null,
+    "diversity_penalty": null,
+    "num_beam_groups": null,
+    "constraints": null,
+    "force_words_ids": null,
+    "prefill_chunk_size": null,
+    "_from_model_config": null,
+    "transformers_version": "5.22.2"
+  },
+  "question_sha256": "588ceea227c2fb93bcd62de0981b65df77e352a01dc17915ed5dad833eb611f8",
+  "versions": {
+    "torch": "2.14.1+cu130",
+    "transformers": "5.22.2",
+    "accelerate": "1.15.0",
+    "safetensors": "0.8.0",
+    "huggingface_hub": "1.33.0",
+    "psutil": "7.2.2"
+  },
+  "python": "3.13.16 (main, Oct  1 2026, 15:40:24) [GCC 13.3.0]",
+  "completed_models": [
+    "base",
+    "plutus"
+  ],
+  "method_note": "Checkpoint comparison, not an adapter-only ablation; Plutus has a different training/export history.",
+  "budget_note": "2048 full-prompt plus all generated tokens. Counts analysis, final text and structural tokens; this is not a 2048-final-answer-token allowance.",
+  "sessions": [
+    {
+      "utc": "2026-11-09T13:31:13.506386+00:00",
+      "versions": {
+        "torch": "2.14.1+cu130",
+        "transformers": "5.22.2",
+        "accelerate": "1.15.0",
+        "safetensors": "0.8.0",
+        "huggingface_hub": "1.33.0",
+        "psutil": "7.2.2"
+      },
+      "python": "3.13.16 (main, Oct  1 2026, 15:40:24) [GCC 13.3.0]",
+      "gpu": "NVIDIA L4"
+    },
+    {
+      "utc": "2026-11-09T13:32:16.292781+00:00",
+      "versions": {
+        "torch": "2.14.1+cu130",
+        "transformers": "5.22.2",
+        "accelerate": "1.15.0",
+        "safetensors": "0.8.0",
+        "huggingface_hub": "1.33.0",
+        "psutil": "7.2.2"
+      },
+      "python": "3.13.16 (main, Oct  1 2026, 15:40:24) [GCC 13.3.0]",
+      "gpu": "NVIDIA L4"
+    },
+    {
+      "utc": "2026-11-10T15:59:17.203647+00:00",
+      "versions": {
+        "torch": "2.14.1+cu130",
+        "transformers": "5.22.2",
+        "accelerate": "1.15.0",
+        "safetensors": "0.8.0",
+        "huggingface_hub": "1.33.0",
+        "psutil": "7.2.2"
+      },
+      "python": "3.13.16 (main, Oct  1 2026, 15:40:24) [GCC 13.3.0]",
+      "gpu": "NVIDIA A100-SXM4-40GB"
+    },
+    {
+      "utc": "2026-11-10T16:52:03.505041+00:00",
+      "versions": {
+        "torch": "2.14.1+cu130",
+        "transformers": "5.22.2",
+        "accelerate": "1.15.0",
+        "safetensors": "0.8.0",
+        "huggingface_hub": "1.33.0",
+        "psutil": "7.2.2"
+      },
+      "python": "3.13.16 (main, Oct  1 2026, 15:40:24) [GCC 13.3.0]",
+      "gpu": "NVIDIA A100-SXM4-80GB"
+    }
+  ],
+  "last_saved_utc": "2026-11-10T18:05:39.682178+00:00",
+  "instrumentation": {
+    "drive_resume": "1.0"
+  },
+  "attempts": [
+    {
+      "started_utc": "2026-11-09T13:33:18.265897+00:00",
+      "diagnostic_only": false
+    },
+    {
+      "started_utc": "2026-11-10T16:04:28.339929+00:00",
+      "diagnostic_only": false
+    },
+    {
+      "started_utc": "2026-11-10T16:53:13.229668+00:00",
+      "diagnostic_only": false
+    }
+  ],
+  "device_maps": {
+    "base": {},
+    "plutus": {
+      "model.embed_tokens": "0",
+      "model.layers.0": "0",
+      "model.layers.1": "0",
+      "model.layers.2": "0",
+      "model.layers.3": "0",
+      "model.layers.4": "0",
+      "model.layers.5": "0",
+      "model.layers.6": "0",
+      "model.layers.7": "0",
+      "model.layers.8": "0",
+      "model.layers.9": "0",
+      "model.layers.10": "0",
+      "model.layers.11": "0",
+      "model.layers.12": "0",
+      "model.layers.13": "0",
+      "model.layers.14": "0",
+      "model.layers.15": "0",
+      "model.layers.16": "0",
+      "model.layers.17": "0",
+      "model.layers.18": "cpu",
+      "model.layers.19": "cpu",
+      "model.layers.20": "cpu",
+      "model.layers.21": "cpu",
+      "model.layers.22": "cpu",
+      "model.layers.23": "cpu",
+      "model.norm": "cpu",
+      "model.rotary_emb": "cpu",
+      "lm_head": "cpu"
+    }
+  },
+  "finished_utc": "2026-11-10T18:05:39.623338+00:00"
+}
